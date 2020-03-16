@@ -16,9 +16,9 @@ fs.readFile("./Json/project.json",(err,data)=>{
         case "PostgreSQL":
             makeConf.getPGConf()
             break;
-        // case "MongoDB":
-        //     makeConf.getMongoDBConf()
-        //     break;
+        case "MongoDB":
+            makeConf.getMongoDBConf()
+            break;
         default:
             console.log("失败")
             break;
