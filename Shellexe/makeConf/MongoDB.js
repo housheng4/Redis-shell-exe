@@ -11,6 +11,10 @@ MongoDB.resultConf = () => {
         }
         let JsonConf = JSON.parse(data)
 
+        let user = JsonConf.user
+        let auth = JsonConf.auth
+        let pwd = JsonConf.pwd
+        // 上面这三项在docker启动时作为命令参数
         let keyList = []
         for (const key in JsonConf) {
             keyList.push(key)
@@ -37,7 +41,18 @@ MongoDB.resultConf = () => {
                 let regD = new RegExp("\n  port: 27017","g")
                 BasicConf = BasicConf.replace(regD,"\n  port: "+JsonConf.binds.Port)
                 let regE = new RegExp("\n  bingIp: 127.0.0.1","g")
-                BasicConf = BasicConf.replace(regE,"\n bindIp: "+JsonConf.binds.IP)
+                BasicConf = BasicConf.replace(regE,"\n  bindIp: "+JsonConf.binds.IP)
+                fs.writeFileRecursive("./newConf/MongoDB/Basic.conf",BasicConf,(err)=>{
+                    console.log(err|| "写入单机配置")
+                })
+            }else {
+                let regF = new RegExp("\n  port: 27017","g")
+                BasicConf = BasicConf.replace(regF,"\n  port: "+JsonConf.binds[binds.length].Port)
+                let regG = new RegExp("\n  bindIp: 127.0.0.1","g")
+                BasicConf = BasicConf.replace(regG,"\n  bindIp: "+JsonConf.binds[binds.length].IP)
+                fs.writeFileRecursive("./newConf/MongoDB/Master.conf",BasicConf,(err)=>{
+                    console.log(err|| "写入MongoDB主节点配置")
+                })
             }
         })
     })

@@ -6,7 +6,7 @@ var writeFileRecursive = require('../common.js')
 RedisConf.resultConf = () => {
     fs.readFile(path.join(__dirname,"../Json/dbconfig.json"), (err, data) => {
         if (err) {
-            console.log("1A1",err)
+            console.log("读取json文件错误",err)
             return
         }
         // 解析JSON文件

@@ -2,8 +2,8 @@ var fs = require('fs')
 var makeConf = require("./makeConf")
 // console.log(makeConf)
 
-fs.readFile("./Json/project.json",(err,data)=>{
-    if(err){
+fs.readFile("./Json/project.json", (err, data) => {
+    if (err) {
         console.log("Json数据错误")
         return
     }
@@ -19,8 +19,14 @@ fs.readFile("./Json/project.json",(err,data)=>{
         case "MongoDB":
             makeConf.getMongoDBConf()
             break;
+        case "TimescaleDB":
+            makeConf.getTimescaleDBConf()
+            break;
+        case "MQTT":
+            makeConf.getMQTTConf()
+            break;
         default:
-            console.log("失败")
+            console.log("找不到数据库")
             break;
     }
 })
