@@ -28,21 +28,19 @@ MongoDB.resultConf = () => {
             let BasicConf = data.toString()
             console.log(BasicConf)
 
-            let regA = new RegExp("\n  dbpath:","g")
-            BasicConf = BasicConf.replace(regA,"\n  dbpath:"+ JsonConf.dbpath)
+            let regA = new RegExp("\n  dbPath:","g")
+            BasicConf = BasicConf.replace(regA,"\n  dbPath:"+ JsonConf.dbpath)
 
             let regB = new RegExp("\n#replication:", "g")
-            BasicConf = BasicConf.replace(regB,"\nreplication:"+"\nreplSetName:"+JsonConf.replSet)
-
-            let regC = new RegExp("\n#replication:","g")
-            BasicConf = BasicConf.replace(regC,"\nreplication:"+"\noplogSize:"+JsonConf.oplogSize)
+            BasicConf = BasicConf.replace(regB,"\nreplication:"+"\n  replSetName:"+JsonConf.replSet +"\n  oplogSize:"+JsonConf.oplogSize)
 
             if(JsonConf.master === -1) {
                 let regD = new RegExp("\n  port: 27017","g")
-                BasicConf = BasicConf.replace(regD,"\n  port: "+JsonConf.binds.Port)
-                let regE = new RegExp("\n  bingIp: 127.0.0.1","g")
-                BasicConf = BasicConf.replace(regE,"\n  bindIp: "+JsonConf.binds.IP)
-                fs.writeFileRecursive("./newConf/MongoDB/Basic.conf",BasicConf,(err)=>{
+                console.log(JsonConf.binds)
+                BasicConf = BasicConf.replace(regD,"\n  port: "+JsonConf.binds[0].Port)
+                let regE = new RegExp("\n  bindIp: 127.0.0.1","g")
+                BasicConf = BasicConf.replace(regE,"\n  bindIp: "+JsonConf.binds[0].IP)
+                writeFileRecursive("../newConf/MongoDB/Basic.conf",BasicConf,(err)=>{
                     console.log(err|| "写入单机配置")
                 })
             }else {
@@ -50,7 +48,7 @@ MongoDB.resultConf = () => {
                 BasicConf = BasicConf.replace(regF,"\n  port: "+JsonConf.binds[binds.length].Port)
                 let regG = new RegExp("\n  bindIp: 127.0.0.1","g")
                 BasicConf = BasicConf.replace(regG,"\n  bindIp: "+JsonConf.binds[binds.length].IP)
-                fs.writeFileRecursive("./newConf/MongoDB/Master.conf",BasicConf,(err)=>{
+                writeFileRecursive("../newConf/MongoDB/Master.conf",BasicConf,(err)=>{
                     console.log(err|| "写入MongoDB主节点配置")
                 })
             }
